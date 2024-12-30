@@ -1,0 +1,62 @@
+.turnContainer{
+    /* background-color: aquamarine; */
+    margin-right: 50px;
+    padding: 10px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    height:200px;
+    width:200px;
+
+}
+
+.turn-1{
+    color:red;
+}
+.turn-2{
+    color:blue;
+}
+
+.turn-3{
+    color:green;
+}
+.turn-4{
+    color:yellow;
+}
+
+.turn-1-bg{
+    background-color:red;
+    height:30px;
+    width:30px;
+    border-radius: 100%;
+
+}
+.turn-2-bg{
+    background-color:blue;
+    height:30px;
+    width:30px;
+    border-radius: 100%;
+
+}
+
+.turn-3-bg{
+    background-color:green;
+    height:30px;
+    width:30px;
+    border-radius: 100%;
+
+}
+
+.turn-4-bg{
+    background-color:yellow;
+    height:30px;
+    width:30px;
+    border-radius: 100%;
+
+}
+
+
+
+

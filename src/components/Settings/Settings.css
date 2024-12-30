@@ -1,0 +1,17 @@
+.settings-container{
+    /* background-color: bisque; */
+    display:flex;
+    flex-direction: column;
+    padding:10px;
+    margin-left: 10px;
+    color: white;
+}
+
+.settings-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    
+}

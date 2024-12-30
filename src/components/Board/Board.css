@@ -1,0 +1,99 @@
+.board-container {
+  width: 600px; /* Fixed dimensions to lock the board */
+  height: 550px;
+  position: relative;
+  overflow: hidden; /* Ensure nothing extends outside the board */
+}
+
+
+.board-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 1px;
+  width: 100%;
+  height: 100%;
+  /* border-radius: 10px; */
+  position: relative;
+  z-index: 0;
+  background-color: rgb(54, 55, 57);
+}
+
+.cell {
+  padding: 2px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0.5px 0.5px 0.5px rgb(0, 0, 0); 
+
+  /* background-color: #18181b; */
+  /* background-image: linear-gradient(90deg, #FAD961 0%, #F76B1C 100%); */
+  color: white;
+  font-size: 20px;
+
+}
+
+.cell-0 {
+  background-color: #f38686; /* Light red */
+}
+
+.cell-1 {
+  background-color: #88f988; /* Light green */
+}
+
+.cell-2 {
+  background-color: #8888f7; /* Light blue */
+}
+
+
+.snake, .ladder {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.player-1, .player-2, .player-3, .player-4 {
+  width: 20px; /* Fixed size for tokens */
+  height: 20px;
+  /* background-color: #fff; Add a default color if not set dynamically */
+  border-radius: 50%;
+  position: absolute;
+  z-index: 3;
+}
+
+.player-1{
+  transform: translate(-20%,60%);
+}
+.player-2{
+  transform: translate(-20%,-20%);
+
+}
+
+.player-3{
+  transform: translate(-120%,60%);
+
+}
+
+.player-4{
+  transform: translate(-120%,-20%);
+}
+
+
+
+
+
+.snake-emoji{
+  font-size: 25px;
+}
+.ladder-emoji{
+  font-size: 25px;
+}

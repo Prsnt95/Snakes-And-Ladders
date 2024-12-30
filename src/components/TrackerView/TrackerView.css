@@ -1,0 +1,18 @@
+.tracker-container{
+    width:120px;
+    height:fit-content;
+    padding:5px;
+    color:white;
+    margin: 20px;
+
+
+
+}
+
+.pos-list{
+    display: flex;
+    flex-direction: column;
+}
+li{
+    display:flex ;
+}
