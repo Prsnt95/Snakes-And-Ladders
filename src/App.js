@@ -12,9 +12,6 @@ function App() {
   const numbers = Array.from({ length: 100 }, (_, i) => i + 1);
   const [board] = useState(numbers);
   const [numPlayers, setNumPlayers] = useState(4);
-  const [initialPositions, setInitialPositions] = useState(
-    Array(numPlayers).fill(1)
-  );
   const [playerPositions, setPlayerPositions] = useState(
     Array(numPlayers).fill(1)
   );
@@ -24,9 +21,8 @@ function App() {
 
   const confirmPlayerChange = (players) => {
     setNumPlayers(players);
-    setInitialPositions(Array(players).fill(1));
-    setPlayerPositions(Array(players).fill(1));
-    setCurrentPlayer(0);
+    setPlayerPositions(Array(players).fill(1)); // Reset player positions when the number of players changes
+    setCurrentPlayer(0); // Reset to the first player
   };
 
   const handleDiceRoll = () => {
