@@ -5,41 +5,57 @@ import { rollDice } from "./components/Game/GameLogic";
 import DiceRoll from "./components/Dice/DiceRoll";
 import TurnView from "./components/Turn/TurnView";
 import TrackerView from "./components/TrackerView/TrackerView";
+import Settings from "./components/Setting/Settings";
+import DiceDisplay from "./components/Dice/DiceDisplay";
 
 function App() {
   const numbers = Array.from({ length: 100 }, (_, i) => i + 1);
   const [board] = useState(numbers);
-  const initialPositions = [1, 1, 1, 1];
-  const [playerPositions, setPlayerPositions] = useState([90, 94, 94, 93]);
+  const [numPlayers, setNumPlayers] = useState(4);
+  const [initialPositions, setInitialPositions] = useState(
+    Array(numPlayers).fill(1)
+  );
+  const [playerPositions, setPlayerPositions] = useState(
+    Array(numPlayers).fill(1)
+  );
   const [currentPlayer, setCurrentPlayer] = useState(0);
-  const [rolling, setRolling] = useState(false); // Track if the dice roll is in progress
+  const [rolling, setRolling] = useState(false);
+  const [diceValue, setDiceValue] = useState(null);
+
+  const confirmPlayerChange = (players) => {
+    setNumPlayers(players);
+    setInitialPositions(Array(players).fill(1));
+    setPlayerPositions(Array(players).fill(1));
+    setCurrentPlayer(0);
+  };
+
+  const handleDiceRoll = () => {
+    rollDice(
+      playerPositions,
+      currentPlayer,
+      setPlayerPositions,
+      setCurrentPlayer,
+      setRolling,
+      setDiceValue
+    );
+  };
 
   return (
     <div className="App">
       <h1 className="gameTitle">Snakes & Ladders</h1>
       <div className="board_dice">
         <TurnView turn={currentPlayer + 1} />
-
         <Board board={board} playerPositions={playerPositions} />
-        <DiceRoll
-          rollDice={(...args) => rollDice(...args, setRolling)} // Pass setRolling to rollDice
-          playerPositions={playerPositions}
-          currentPlayer={currentPlayer}
-          setPlayerPositions={setPlayerPositions}
-          setCurrentPlayer={setCurrentPlayer}
-          rolling={rolling} // Pass rolling state to the DiceRoll component
-        />
-        <button
-          onClick={() => {
-            setPlayerPositions(initialPositions);
-            setCurrentPlayer(0);
-          }}
-          disabled={rolling} // Disable the reset button during rolling
-          className="reset-btn"
-        >
-          Reset
-        </button>
+        <div className="dice-section">
+          <DiceRoll onRollDice={handleDiceRoll} rolling={rolling} />
+          <DiceDisplay rollValue={diceValue} />
+        </div>
         <TrackerView playerPositions={playerPositions} />
+        <Settings
+          numPlayers={numPlayers}
+          confirmPlayerChange={confirmPlayerChange}
+          rolling={rolling}
+        />
       </div>
     </div>
   );

@@ -5,6 +5,8 @@ import redToken from "../../assets/redToken.svg";
 import blueToken from "../../assets/blueToken.svg";
 import greenToken from "../../assets/greenToken.svg";
 import yellowToken from "../../assets/yellowToken.svg";
+import snakeImg from "../../assets/snakeImage.png";
+import ladderImg from "../../assets/ladder.png";
 
 const Board = ({ board, playerPositions }) => {
   const size = Math.sqrt(board.length);
@@ -23,64 +25,99 @@ const Board = ({ board, playerPositions }) => {
     const col = cellIndex % size;
 
     return {
-      x: col * 60 + 30, // 60px cell width + 30px offset
-      y: row * 55 + 27.5, // 55px cell height + 27.5px offset
+      x: col * 60 + 30,
+      y: row * 55 + 27.5,
     };
   };
 
-  const renderLines = () => {
-    const allLines = [];
+  const renderSnakesAndLadders = () => {
+    return (
+      <div className="snakes-and-ladders-container" style={{ zIndex: 1 }}>
+        {Object.entries(snakes).map(([start, end]) => {
+          const startPos = getCellCenter(parseInt(start));
+          const endPos = getCellCenter(end);
+          const angle =
+            Math.atan2(endPos.y - startPos.y, endPos.x - startPos.x) *
+            (180 / Math.PI);
+          const length = Math.sqrt(
+            Math.pow(endPos.x - startPos.x, 2) +
+              Math.pow(endPos.y - startPos.y, 2)
+          );
 
-    Object.entries(snakes).forEach(([start, end]) => {
-      const startPos = getCellCenter(parseInt(start));
-      const endPos = getCellCenter(end);
+          return (
+            <div
+              key={`snake-${start}`}
+              className="snake-image"
+              style={{
+                position: "absolute",
+                left: `${startPos.x}px`,
+                top: `${startPos.y - 15}px`,
+                width: `${length}px`,
+                transform: `rotate(${angle}deg)`,
+                transformOrigin: "0 50%",
+                zIndex: 1,
+              }}
+            >
+              <img
+                src={snakeImg}
+                alt="snake"
+                style={{
+                  width: "100%",
+                  height: "30px",
+                  objectFit: "cover",
+                }}
+              />
+            </div>
+          );
+        })}
 
-      allLines.push(
-        <path
-          key={`snake-${start}`}
-          d={`M ${startPos.x} ${startPos.y} Q ${(startPos.x + endPos.x) / 2} ${
-            (startPos.y + endPos.y) / 2
-          }, ${endPos.x} ${endPos.y}`}
-          stroke="red"
-          strokeWidth="3"
-          fill="none"
-          strokeDasharray="5,5"
-        />
-      );
-    });
+        {Object.entries(ladders).map(([start, end]) => {
+          const startPos = getCellCenter(parseInt(start));
+          const endPos = getCellCenter(end);
+          const angle =
+            Math.atan2(endPos.y - startPos.y, endPos.x - startPos.x) *
+            (180 / Math.PI);
+          const length = Math.sqrt(
+            Math.pow(endPos.x - startPos.x, 2) +
+              Math.pow(endPos.y - startPos.y, 2)
+          );
 
-    Object.entries(ladders).forEach(([start, end]) => {
-      const startPos = getCellCenter(parseInt(start));
-      const endPos = getCellCenter(end);
-
-      allLines.push(
-        <path
-          key={`ladder-${start}`}
-          d={`M ${startPos.x} ${startPos.y} Q ${(startPos.x + endPos.x) / 2} ${
-            (startPos.y + endPos.y) / 2
-          }, ${endPos.x} ${endPos.y}`}
-          stroke="green"
-          strokeWidth="3"
-          fill="none"
-        />
-      );
-    });
-
-    return allLines;
+          return (
+            <div
+              key={`ladder-${start}`}
+              className="ladder-image"
+              style={{
+                position: "absolute",
+                left: `${startPos.x}px`,
+                top: `${startPos.y - 15}px`,
+                width: `${length}px`,
+                transform: `rotate(${angle}deg)`,
+                transformOrigin: "0 50%",
+                zIndex: 1,
+              }}
+            >
+              <img
+                src={ladderImg}
+                alt="ladder"
+                style={{
+                  width: "100%",
+                  height: "30px",
+                }}
+              />
+            </div>
+          );
+        })}
+      </div>
+    );
   };
 
   return (
     <div className="board-container">
-      <svg className="board-svg" viewBox="0 0 600 550">
-        {renderLines()}
-      </svg>
+      {renderSnakesAndLadders()}
       <div className="board">
         {flattenedBoard.map((cell, index) => (
           <div key={index} className={`cell cell-${index % 3}`}>
             {cell}
-            {snakes[cell] && <span className="snake-emoji">🐍</span>}
-            {ladders[cell] && <span className="ladder-emoji">🪜</span>}
-
             {playerPositions.map((playerPosition, playerIndex) =>
               playerPosition === cell ? (
                 <img
@@ -100,6 +137,7 @@ const Board = ({ board, playerPositions }) => {
                     position: "absolute",
                     width: "30px",
                     height: "30px",
+                    zIndex: 2, // Higher z-index to appear above snakes and ladders
                   }}
                 />
               ) : null

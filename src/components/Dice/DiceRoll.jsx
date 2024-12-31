@@ -1,32 +1,12 @@
-// DiceRoll.jsx
 import React from "react";
-import "./DiceRoll.css"; // Optional: Add styles specific to DiceRoll
-// import dice_1 from "../../assets/dice-1.png";
-// import dice_2 from "../../assets/dice-1.png"
-// import dice_3 from "../../assets/dice-1.png"
-// import dice_4 from "../../assets/dice-1.png"
-// import dice_5 from "../../assets/dice-1.png"
-// import dice_6 from "../../assets/dice-1.png"
+import "./DiceRoll.css";
 
-const DiceRoll = ({
-  rollDice,
-  playerPositions,
-  currentPlayer,
-  setPlayerPositions,
-  setCurrentPlayer,
-  rolling,
-}) => {
+const DiceRoll = ({ onRollDice, rolling }) => {
   return (
     <button
-      onClick={() =>
-        rollDice(
-          playerPositions,
-          currentPlayer,
-          setPlayerPositions,
-          setCurrentPlayer
-        )
-      }
-      disabled={rolling} // Disable the button when rolling is true
+      className={`dice-button ${rolling ? "rolling" : ""}`}
+      onClick={onRollDice}
+      disabled={rolling}
     >
       Roll Dice
     </button>

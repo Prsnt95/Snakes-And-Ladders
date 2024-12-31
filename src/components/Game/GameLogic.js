@@ -1,21 +1,22 @@
 // gameLogic.js
 import { snakes, ladders } from "../Board/BoardLogic";
 
-// Function to handle dice roll and player movement
 export const rollDice = (
   playerPositions,
   currentPlayer,
   setPlayerPositions,
   setCurrentPlayer,
-  setRolling // Add this parameter
+  setRolling,
+  setDiceValue // New parameter
 ) => {
-  if (playerPositions[currentPlayer] >= 100) return; // Prevent rolling if the player already won
+  if (playerPositions[currentPlayer] >= 100) return;
 
-  const diceRoll = Math.floor(Math.random() * 6) + 1; // Roll a number between 1 and 6
+  const diceRoll = Math.floor(Math.random() * 6) + 1;
+  setDiceValue(diceRoll); // Update the dice value display
   const targetPosition = playerPositions[currentPlayer] + diceRoll;
 
   if (targetPosition <= 100) {
-    setRolling(true); // Disable the Dice Roll button
+    setRolling(true);
 
     const movePlayerStepByStep = (currentPosition, targetPosition) => {
       if (currentPosition < targetPosition) {
@@ -30,27 +31,26 @@ export const rollDice = (
       } else {
         let finalPosition = targetPosition;
         if (snakes[finalPosition]) {
-          finalPosition = snakes[finalPosition]; // Snake encountered
+          finalPosition = snakes[finalPosition];
         } else if (ladders[finalPosition]) {
-          finalPosition = ladders[finalPosition]; // Ladder encountered
+          finalPosition = ladders[finalPosition];
         }
 
         const newPlayerPositions = [...playerPositions];
         newPlayerPositions[currentPlayer] = finalPosition;
         setPlayerPositions(newPlayerPositions);
 
-        // Switch to the next player
         setTimeout(() => {
           setCurrentPlayer(
             (prevPlayer) => (prevPlayer + 1) % playerPositions.length
           );
-          setRolling(false); // Re-enable the Dice Roll button after the turn
-        }, 200); // Small delay to avoid premature enabling
+          setRolling(false);
+        }, 200);
       }
     };
 
     movePlayerStepByStep(playerPositions[currentPlayer], targetPosition);
   } else {
-    setRolling(false); // Re-enable if no move is made
+    setRolling(false);
   }
 };
